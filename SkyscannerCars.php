@@ -43,7 +43,7 @@ class SkyscannerCars {
     $path = SKYSCANNER_CARS_SESSION_PATH;
     $path .= '/' . $params['market'];
     $path .= '/' . $params['currency'];
-    $path .= '/' . isset($params['locale']) ? $params['locale'] : $locale;
+    $path .= '/' . (isset($params['locale']) ? $params['locale'] : $locale);
     $path .= '/' . $params['pickupplace'];
     $path .= '/' . $params['dropoffplace'];
     $path .= '/' . $params['pickupdatetime'];

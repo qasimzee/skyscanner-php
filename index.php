@@ -3,7 +3,8 @@
 include_once 'SkyscannerFlights.php';
 include_once 'SkyscannerCars.php';
 
-define ('API_KEY', 'tr059372395409930573607329916761');
+//define ('API_KEY', 'tr059372395409930573607329916761');
+define ('API_KEY', 'tr466745184696522911149195491151');
 
 function printFlights() {
 
