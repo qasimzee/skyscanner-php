@@ -9,13 +9,13 @@
 
 include_once 'SkyscannerClient.php';
 
-define('SKYSCANNER_SESSION_PATH', 'pricing/v1.0');
+define('SKYSCANNER_CARS_SESSION_PATH', 'http://partners.api.skyscanner.net/apiservices/carhire/liveprices/v2');
 define('SKYSCANNER_LOCALES_PATH', 'reference/v1.0/locales');
 
-define('SKYSCANNER_HTTP_SUCCESS_CODE', 201);
+define('SKYSCANNER_CARS_HTTP_SUCCESS_CODE', 200);
 // A service client for Skyscanner API.
 
-class SkyscannerFlights {
+class SkyscannerCars {
   var $api_key;
   var $client;
   public $locale = 'en-US';
@@ -31,21 +31,27 @@ class SkyscannerFlights {
     if ($this->client->error_code != SKYSCANNER_HTTP_SUCCESS_CODE) {
       throw new Exception($session);
     }
-    //After creating the session please allow at least one second 
-    //before polling the session. A response will be available immediately,
-    //but time must be given to allow the price updates to take place.
     sleep(1);
     $itineraries = $this->pollSession($session['location']);
     return $itineraries;
   }
 
   /**
-   * POST http://partners.api.skyscanner.net/apiservices/pricing/v1.0
+   * POST http://partners.api.skyscanner.net/apiservices/carhire/liveprices/v2/{market}/{currency}/{locale}/{pickupplace}/{dropoffplace}/{pickupdatetime}/{dropoffdatetime}/{driverage}?apiKey={apiKey}&userip={userip}
    */
   function createSession($params) {
-    $params['locale'] = $this->locale;
-    $response = $this->client->post(SKYSCANNER_SESSION_PATH, $params);
-    if ($this->client->error_code != SKYSCANNER_HTTP_SUCCESS_CODE) {
+    $path = SKYSCANNER_CARS_SESSION_PATH;
+    $path .= '/' . $params['market'];
+    $path .= '/' . $params['currency'];
+    $path .= '/' . isset($params['locale']) ? $params['locale'] : $locale;
+    $path .= '/' . $params['pickupplace'];
+    $path .= '/' . $params['dropoffplace'];
+    $path .= '/' . $params['pickupdatetime'];
+    $path .= '/' . $params['dropoffdatetime'];
+    $path .= '/' . $params['driverage'];
+    $response = $this->client->api($path);
+    print_r($this->client);
+    if ($this->client->error_code != SKYSCANNER_CARS_HTTP_SUCCESS_CODE) {
       return $this->client->response_body;
     } 
     return $this->client->response_header;
