@@ -18,6 +18,7 @@ function printFlights() {
     'dropoffdatetime' => '2015-10-10',
     'driverage' => '25',
     'adults' => '1',
+
   );
   $sc_flights = new SkyscannerCars(API_KEY); 
   

@@ -49,7 +49,8 @@ class SkyscannerCars {
     $path .= '/' . $params['pickupdatetime'];
     $path .= '/' . $params['dropoffdatetime'];
     $path .= '/' . $params['driverage'];
-    $response = $this->client->api($path);
+    $response = $this->client->api($path, array('userip' => urlencode($_SERVER['REMOTE_ADDR'])));
+    //$response = $this->client->api($path);
     print_r($this->client);
     if ($this->client->error_code != SKYSCANNER_CARS_HTTP_SUCCESS_CODE) {
       return $this->client->response_body;
