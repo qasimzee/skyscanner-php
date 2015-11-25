@@ -39,7 +39,7 @@ class SkyscannerClient {
     }
     
     $response = null;
-
+    
     switch( $method ) {
     case 'GET':  
       $response = $this->request($url, $parameters, "GET");  
@@ -69,8 +69,9 @@ class SkyscannerClient {
     return $this->api($url, 'POST', $parameters);
   }
 
-  private function request($url, $params=false, $type="GET") {
-    if ($type == "GET") {
+  private function request($url, $params=null, $type="GET") {
+    
+    if ($type == "GET" && count($params)) {
       $url = $url . (strpos( $url, '?' ) ? '&' : '?') . http_build_query($params);
     }
     
