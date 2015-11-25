@@ -10,6 +10,7 @@
 include_once 'SkyscannerClient.php';
 
 define('SKYSCANNER_CARS_SESSION_PATH', 'http://partners.api.skyscanner.net/apiservices/carhire/liveprices/v2');
+define('SKYSCANNER_CARS_AUTO_SUGGEST_PATH', 'http://partners.api.skyscanner.net/apiservices/hotels/autosuggest/v2');
 define('SKYSCANNER_LOCALES_PATH', 'reference/v1.0/locales');
 
 define('SKYSCANNER_CARS_HTTP_SUCCESS_CODE', 302);
@@ -43,6 +44,20 @@ class SkyscannerCars {
     return $this->client->response_header;
   }
 
+  function autoSuggest($params) {
+    $path = SKYSCANNER_CARS_AUTO_SUGGEST_PATH; 
+    $path .= '/' . $params['market'];
+    $path .= '/' . $params['currency'];
+    $path .= '/' . (isset($params['locale']) ? $params['locale'] : $locale);
+    $path .= '/' . $params['query'];
+    
+    $response = $this->client->api($path, 'GET'); 
+    
+    if ($this->client->error_code != 200) {
+      return $this->client->response_header;
+    } 
+    return $response; 
+  }
   function pollSession($polling_url) { 
     return $this->client->api($polling_url, 'GET');
   }
