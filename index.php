@@ -16,7 +16,7 @@ function printFlights() {
     'dropoffplace' => 'IAD-sky',
     'pickupdatetime' => '2015-12-11T00:00',
     'dropoffdatetime' => '2015-12-15T00:00',
-    'driverage' => '25',
+    'driverage' => '26',
     'adults' => '1',
   );
   $sc_flights = new SkyscannerCars(API_KEY); 

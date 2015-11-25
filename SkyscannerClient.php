@@ -34,14 +34,19 @@ class SkyscannerClient {
     if ( strrpos($url, 'http://') !== 0 && strrpos($url, 'https://') !== 0 ) {
       $url = $this->api_base_url . $url;
     }
-   
-    $parameters['apiKey'] = $this->api_key;
-
+    if (strpos($url, 'apikey') === FALSE) { 
+      $parameters['apiKey'] = $this->api_key; 
+    }
+    
     $response = null;
 
     switch( $method ) {
-    case 'GET'  : $response = $this->request( $url, $parameters, "GET"  ); break; 
-    case 'POST' : $response = $this->request( $url, $parameters, "POST" ); break;
+    case 'GET':  
+      $response = $this->request($url, $parameters, "GET");  
+      break; 
+    case 'POST': 
+      $response = $this->request($url, $parameters, "POST"); 
+      break;
     }
 
     if( $this->response_body && $this->decode_json ) {
@@ -68,7 +73,7 @@ class SkyscannerClient {
     if ($type == "GET") {
       $url = $url . (strpos( $url, '?' ) ? '&' : '?') . http_build_query($params);
     }
-  
+    
     $this->http_info = array();
     $ch = curl_init();
 
@@ -79,19 +84,19 @@ class SkyscannerClient {
     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT , $this->curl_connect_time_out); 
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER , $this->curl_ssl_verifypeer);
     curl_setopt($ch, CURLOPT_HTTPHEADER     , $this->curl_header);
-  
+
     curl_setopt($ch, CURLOPT_HEADER         , 1);
     if($this->curl_proxy) {
       curl_setopt( $ch, CURLOPT_PROXY       , $this->curl_proxy);
     }
-  
+
     if( $type == "POST" ) {
       curl_setopt($ch, CURLOPT_POST, 1); 
       if($params) curl_setopt( $ch, CURLOPT_POSTFIELDS, $params );
     }
 
     $response = curl_exec($ch);
- 
+
     $this->http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     $this->http_info = array_merge($this->http_info, curl_getinfo($ch));
     $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
