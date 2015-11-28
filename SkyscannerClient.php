@@ -74,7 +74,7 @@ class SkyscannerClient {
     if ($type == "GET" && count($params)) {
       $url = $url . (strpos( $url, '?' ) ? '&' : '?') . http_build_query($params);
     }
-    
+    echo $url; 
     $this->http_info = array();
     $ch = curl_init();
 

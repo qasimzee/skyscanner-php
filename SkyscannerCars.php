@@ -10,7 +10,7 @@
 include_once 'SkyscannerClient.php';
 
 define('SKYSCANNER_CARS_SESSION_PATH', 'http://partners.api.skyscanner.net/apiservices/carhire/liveprices/v2');
-define('SKYSCANNER_CARS_AUTO_SUGGEST_PATH', 'http://partners.api.skyscanner.net/apiservices/hotels/autosuggest/v2');
+define('SKYSCANNER_CARS_AUTO_SUGGEST_PATH', 'http://partners.api.skyscanner.net/apiservices/carhire/autosuggest/v2');
 define('SKYSCANNER_LOCALES_PATH', 'reference/v1.0/locales');
 
 define('SKYSCANNER_CARS_HTTP_SUCCESS_CODE', 302);
@@ -33,8 +33,8 @@ class SkyscannerCars {
     $path .= '/' . $params['currency'];
     $path .= '/' . (isset($params['locale']) ? $params['locale'] : $locale);
     $path .= '/' . $params['pickupplace'];
-    $path .= '/' . $params['dropoffplace'];
-    $path .= '/' . $params['pickupdatetime'];
+    $path .= '/' . ($params['dropoffplace']);
+    $path .= '/' . ($params['pickupdatetime']);
     $path .= '/' . $params['dropoffdatetime'];
     $path .= '/' . $params['driverage'];
     $response = $this->client->api($path, 'GET', array('userip' => '221.120.212.154')); 
@@ -49,7 +49,7 @@ class SkyscannerCars {
     $path .= '/' . $params['market'];
     $path .= '/' . $params['currency'];
     $path .= '/' . (isset($params['locale']) ? $params['locale'] : $locale);
-    $path .= '/' . $params['query'];
+    $path .= '/' . rawurlencode($params['query']);
     
     $response = $this->client->api($path, 'GET'); 
     
