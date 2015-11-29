@@ -33,11 +33,11 @@ class SkyscannerCars {
     $path .= '/' . $params['currency'];
     $path .= '/' . (isset($params['locale']) ? $params['locale'] : $locale);
     $path .= '/' . $params['pickupplace'];
-    $path .= '/' . ($params['dropoffplace']);
-    $path .= '/' . ($params['pickupdatetime']);
+    $path .= '/' . $params['dropoffplace'];
+    $path .= '/' . $params['pickupdatetime'];
     $path .= '/' . $params['dropoffdatetime'];
     $path .= '/' . $params['driverage'];
-    $response = $this->client->api($path, 'GET', array('userip' => '221.120.212.154')); 
+    $response = $this->client->api($path, 'GET', array('userip' => '127.0.0.1')); 
     if ($this->client->error_code != SKYSCANNER_CARS_HTTP_SUCCESS_CODE) {
       return $this->client->response_body;
     } 
@@ -50,9 +50,7 @@ class SkyscannerCars {
     $path .= '/' . $params['currency'];
     $path .= '/' . (isset($params['locale']) ? $params['locale'] : $locale);
     $path .= '/' . rawurlencode($params['query']);
-    
-    $response = $this->client->api($path, 'GET'); 
-    
+    $response = $this->client->api($path, 'GET');
     if ($this->client->error_code != 200) {
       return $this->client->response_header;
     } 

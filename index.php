@@ -4,8 +4,8 @@ include_once 'SkyscannerFlights.php';
 include_once 'SkyscannerCars.php';
 
 //define ('API_KEY', 'tr059372395409930573607329916761');
-//define ('API_KEY', 'tr466745184696522911149195491151');
-define ('API_KEY', 'prtl6749387986743898559646983194');
+define ('API_KEY', 'tr466745184696522911149195491151');
+//define ('API_KEY', 'prtl6749387986743898559646983194');
 
 function printCars() {
 
@@ -13,12 +13,12 @@ function printCars() {
     'market' => 'US',
     'currency' => 'PKR', 
     'locale' => 'en-US',
-    'pickupplace' => 'JFK-sky',
-    'dropoffplace' => 'IAD-sky',
-    'pickupdatetime' => '2015-12-11T00:00',
-    'dropoffdatetime' => '2015-12-15T00:00',
+    'pickupplace' => '95565058',
+    'dropoffplace' => '95565058',
+    'pickupdatetime' => '2015-12-09T12:00',
+    'dropoffdatetime' => '2015-12-10T12:00',
     'driverage' => '26',
-    'adults' => '1',
+    #'adults' => '1',
   );
   $sc_flights = new SkyscannerCars(API_KEY); 
 
@@ -38,9 +38,10 @@ function printAutoSuggest($query) {
     'query' => $query, 
   );
   $sc_cars = new SkyscannerCars(API_KEY); 
-  print_r($sc_cars->autoSuggest($params));
+  $cars = ($sc_cars->autoSuggest($params));
+  print_r($cars->cars);
 }
-//printCars();
-printAutoSuggest('pari');
+printCars();
+//printAutoSuggest('new york');
 
 ?>

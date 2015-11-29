@@ -7,7 +7,7 @@
 // A service client for Skyscanner API.
 
 class SkyscannerClient {
-  public $api_base_url     = "http://partners.api.skyscanner.net/apiservices/";
+  public $api_base_url     = "http://partners.api.skyscanner.net";
 
   public $api_key                  = '';
   public $decode_json              = true;
@@ -32,7 +32,7 @@ class SkyscannerClient {
    */
   public function api($url, $method = "GET", $parameters = array()) {
     if ( strrpos($url, 'http://') !== 0 && strrpos($url, 'https://') !== 0 ) {
-      $url = $this->api_base_url . $url;
+      $url = $this->api_base_url . '/apiservices/' . $url;
     }
     if (strpos($url, 'apikey') === FALSE) { 
       $parameters['apiKey'] = $this->api_key; 
@@ -41,7 +41,7 @@ class SkyscannerClient {
     $response = null;
     
     switch( $method ) {
-    case 'GET':  
+    case 'GET':
       $response = $this->request($url, $parameters, "GET");  
       break; 
     case 'POST': 
@@ -70,14 +70,12 @@ class SkyscannerClient {
   }
 
   private function request($url, $params=null, $type="GET") {
-    
     if ($type == "GET" && count($params)) {
-      $url = $url . (strpos( $url, '?' ) ? '&' : '?') . http_build_query($params);
+      $url = $url . (strpos( $url, '?' ) ? '&' : '?') . html_entity_decode(http_build_query($params));
     }
-    echo $url; 
+    
     $this->http_info = array();
     $ch = curl_init();
-
     curl_setopt($ch, CURLOPT_URL            , $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER , 1);
     curl_setopt($ch, CURLOPT_TIMEOUT        , $this->curl_time_out);
@@ -97,7 +95,6 @@ class SkyscannerClient {
     }
 
     $response = curl_exec($ch);
-
     $this->http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     $this->http_info = array_merge($this->http_info, curl_getinfo($ch));
     $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
@@ -105,7 +102,6 @@ class SkyscannerClient {
     $this->response_body = substr($response, $header_size);
     $this->error_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
-
     return $response; 
   }
   static function parseHeaders($header) {
